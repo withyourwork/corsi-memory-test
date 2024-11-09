@@ -18,6 +18,7 @@ const CorsiTest = () => {
   const attemptsPerLevel = 3;
   const boardSize = 384;
   const blockSize = 48;
+  const duplicateChance = 0.1; // 10% 機率允許重複亮燈
 
   const generateBlockPositions = () => {
     const positions = [];
@@ -92,16 +93,24 @@ const CorsiTest = () => {
   };
 
   const generateSequence = (level) => {
-    let sequence = Array.from({ length: 9 }, (_, i) => i);
-    let result = [];
+    let sequence = [];
+    let availableBlocks = Array.from({ length: 9 }, (_, i) => i);
 
-    for (let i = 0; i < level; i++) {  // 根據指定等級生成序列
-      const index = Math.floor(Math.random() * sequence.length);
-      result.push(sequence[index]);
-      sequence.splice(index, 1);
+    for (let i = 0; i < level; i++) {
+      let blockIndex;
+      if (Math.random() < duplicateChance && sequence.length > 0) {
+        // 在重複機率下，從已經亮燈過的方塊中隨機選擇
+        blockIndex = sequence[Math.floor(Math.random() * sequence.length)];
+      } else {
+        // 正常選擇不重複的方塊
+        const index = Math.floor(Math.random() * availableBlocks.length);
+        blockIndex = availableBlocks[index];
+        availableBlocks.splice(index, 1); // 移除已選擇的方塊以防重複
+      }
+      sequence.push(blockIndex);
     }
 
-    return result;
+    return sequence;
   };
 
   const playSequence = async () => {
