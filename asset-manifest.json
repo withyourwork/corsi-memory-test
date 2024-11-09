@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/corsi-memory-test/static/css/main.421013db.css",
-    "main.js": "/corsi-memory-test/static/js/main.6e1414cb.js",
+    "main.css": "/corsi-memory-test/static/css/main.b11a5e3b.css",
+    "main.js": "/corsi-memory-test/static/js/main.6ec5dcf6.js",
     "index.html": "/corsi-memory-test/index.html",
-    "main.421013db.css.map": "/corsi-memory-test/static/css/main.421013db.css.map",
-    "main.6e1414cb.js.map": "/corsi-memory-test/static/js/main.6e1414cb.js.map"
+    "main.b11a5e3b.css.map": "/corsi-memory-test/static/css/main.b11a5e3b.css.map",
+    "main.6ec5dcf6.js.map": "/corsi-memory-test/static/js/main.6ec5dcf6.js.map"
   },
   "entrypoints": [
-    "static/css/main.421013db.css",
-    "static/js/main.6e1414cb.js"
+    "static/css/main.b11a5e3b.css",
+    "static/js/main.6ec5dcf6.js"
   ]
 }
