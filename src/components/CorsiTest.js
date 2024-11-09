@@ -6,6 +6,7 @@ const CorsiTest = () => {
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(3);
+  const [startingLevel, setStartingLevel] = useState(3); // 起始等級
   const [attempts, setAttempts] = useState(0);
   const [gameStatus, setGameStatus] = useState('ready');
   const [isReverse, setIsReverse] = useState(false);
@@ -90,11 +91,11 @@ const CorsiTest = () => {
     return positions;
   };
 
-  const generateSequence = () => {
+  const generateSequence = (level) => {
     let sequence = Array.from({ length: 9 }, (_, i) => i);
     let result = [];
 
-    for (let i = 0; i < currentLevel; i++) {
+    for (let i = 0; i < level; i++) {  // 根據指定等級生成序列
       const index = Math.floor(Math.random() * sequence.length);
       result.push(sequence[index]);
       sequence.splice(index, 1);
@@ -104,11 +105,12 @@ const CorsiTest = () => {
   };
 
   const playSequence = async () => {
+    setCurrentLevel(startingLevel);  // 設定 currentLevel 為 startingLevel
     setGameStatus('playing');
     setUserSequence([]);
     setBlockPositions(generateBlockPositions());
 
-    const newSequence = generateSequence();
+    const newSequence = generateSequence(startingLevel);  // 使用 startingLevel 生成序列
     setSequence(newSequence);
 
     const sequenceToDisplay = isReverse ? [...newSequence].reverse() : newSequence;
@@ -166,7 +168,7 @@ const CorsiTest = () => {
   };
 
   const resetGame = () => {
-    setCurrentLevel(3);
+    setCurrentLevel(startingLevel);  // 使用 startingLevel 作為初始等級
     setAttempts(0);
     setSequence([]);
     setUserSequence([]);
@@ -218,6 +220,19 @@ const CorsiTest = () => {
             <div className="text-sm text-green-600">當前嘗試</div>
             <div className="text-2xl font-bold text-green-700">{attempts + 1}/{attemptsPerLevel}</div>
           </div>
+        </div>
+
+        {/* 新增選擇起始等級的輸入框 */}
+        <div className="mb-4">
+          <label className="text-sm text-gray-700 mr-2">選擇起始等級 (3-9)：</label>
+          <input
+            type="number"
+            value={startingLevel}
+            onChange={(e) => setStartingLevel(Math.max(3, Math.min(maxBlocks, Number(e.target.value))))} // 限制範圍在 3 到 maxBlocks
+            className="w-20 p-1 border rounded text-center"
+            min={3}
+            max={maxBlocks}
+          />
         </div>
 
         <div className="flex justify-center gap-4 mb-4">
