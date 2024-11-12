@@ -112,12 +112,11 @@ const CorsiTest = () => {
   };
 
   const playSequence = async () => {
-    setCurrentLevel(startingLevel); // 設定初始等級
     setGameStatus('playing');
     setUserSequence([]);
     setBlockPositions(generateBlockPositions());
 
-    const newSequence = generateSequence(startingLevel);
+    const newSequence = generateSequence(currentLevel); // 使用 currentLevel 生成序列
     setSequence(newSequence);
 
     const sequenceToDisplay = isReverse ? [...newSequence].reverse() : newSequence;
@@ -176,7 +175,7 @@ const CorsiTest = () => {
   };
 
   const resetGame = () => {
-    setCurrentLevel(startingLevel);
+    setCurrentLevel(startingLevel); // 重置到起始等級
     setAttempts(0);
     setSequence([]);
     setUserSequence([]);
