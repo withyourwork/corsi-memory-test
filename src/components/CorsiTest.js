@@ -6,7 +6,7 @@ const CorsiTest = () => {
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(3);
-  const [startingLevel, setStartingLevel] = useState(3); // 起始等級
+  const [startingLevel, setStartingLevel] = useState(3);
   const [attempts, setAttempts] = useState(0);
   const [gameStatus, setGameStatus] = useState('ready');
   const [isReverse, setIsReverse] = useState(false);
@@ -99,13 +99,11 @@ const CorsiTest = () => {
     for (let i = 0; i < level; i++) {
       let blockIndex;
       if (Math.random() < duplicateChance && sequence.length > 0) {
-        // 在重複機率下，從已經亮燈過的方塊中隨機選擇
         blockIndex = sequence[Math.floor(Math.random() * sequence.length)];
       } else {
-        // 正常選擇不重複的方塊
         const index = Math.floor(Math.random() * availableBlocks.length);
         blockIndex = availableBlocks[index];
-        availableBlocks.splice(index, 1); // 移除已選擇的方塊以防重複
+        availableBlocks.splice(index, 1);
       }
       sequence.push(blockIndex);
     }
@@ -114,12 +112,12 @@ const CorsiTest = () => {
   };
 
   const playSequence = async () => {
-    setCurrentLevel(startingLevel);  // 設定 currentLevel 為 startingLevel
+    setCurrentLevel(startingLevel); // 設定初始等級
     setGameStatus('playing');
     setUserSequence([]);
     setBlockPositions(generateBlockPositions());
 
-    const newSequence = generateSequence(startingLevel);  // 使用 startingLevel 生成序列
+    const newSequence = generateSequence(startingLevel);
     setSequence(newSequence);
 
     const sequenceToDisplay = isReverse ? [...newSequence].reverse() : newSequence;
@@ -161,23 +159,24 @@ const CorsiTest = () => {
       return;
     }
 
-    setAttempts((prev) => prev + 1);
-
-    if (attempts + 1 >= attemptsPerLevel) {
-      if (currentLevel < maxBlocks) {
-        setCurrentLevel((prev) => prev + 1);
-        setAttempts(0);
-      } else {
-        setGameStatus('finished');
-        return;
+    setAttempts((prevAttempts) => {
+      const newAttempts = prevAttempts + 1;
+      if (newAttempts >= attemptsPerLevel) {
+        if (currentLevel < maxBlocks) {
+          setCurrentLevel((prevLevel) => prevLevel + 1);
+          setAttempts(0);
+        } else {
+          setGameStatus('finished');
+        }
       }
-    }
+      return newAttempts;
+    });
 
     setGameStatus('ready');
   };
 
   const resetGame = () => {
-    setCurrentLevel(startingLevel);  // 使用 startingLevel 作為初始等級
+    setCurrentLevel(startingLevel);
     setAttempts(0);
     setSequence([]);
     setUserSequence([]);
@@ -231,13 +230,12 @@ const CorsiTest = () => {
           </div>
         </div>
 
-        {/* 新增選擇起始等級的輸入框 */}
         <div className="mb-4">
           <label className="text-sm text-gray-700 mr-2">選擇起始等級 (3-9)：</label>
           <input
             type="number"
             value={startingLevel}
-            onChange={(e) => setStartingLevel(Math.max(3, Math.min(maxBlocks, Number(e.target.value))))} // 限制範圍在 3 到 maxBlocks
+            onChange={(e) => setStartingLevel(Math.max(3, Math.min(maxBlocks, Number(e.target.value))))}
             className="w-20 p-1 border rounded text-center"
             min={3}
             max={maxBlocks}
